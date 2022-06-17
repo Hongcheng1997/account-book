@@ -1,6 +1,6 @@
 export default async (api, options = {}) => {
-  // const baseUrl = "http://www.account-boosk.top:3000";
-    const baseUrl = "http://www.account.com:3001";
+  const baseUrl = "http://www.account-book.top:3000";
+  // const baseUrl = "http://www.account.com:3001";
   if (options.method === "POST") {
     const data = await fetch(`${baseUrl}${api}`, {
       method: "POST",
