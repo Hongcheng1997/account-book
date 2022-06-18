@@ -23,7 +23,7 @@ export default async (api, options = {}) => {
 };
 
 function formatParams(params = {}) {
-  const url = Object.entries(params).reduce((current, prev) => {
+  const url = Object.entries(params).reduce((prev, current) => {
     return `${prev}${current[0]}=${current[1]}&`;
   }, "?");
   return url.substring(0, url.length - 1);

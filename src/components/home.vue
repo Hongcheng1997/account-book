@@ -7,7 +7,7 @@
     @click-left="onClickLeft"
     @click-right="onClickRight"
   />
-  <h1 style="text-align: center">累计消费: 0</h1>
+  <h1 style="text-align: center">当月消费: {{ total }}</h1>
   <van-form @submit="onSubmit" style="margintop: 20px">
     <van-cell-group inset>
       <van-field
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Toast } from "vant";
 import fetch from "../fetch.js";
@@ -61,11 +61,30 @@ export default {
   setup() {
     const type = ref();
     const account = ref();
-    const date = ref(`${new Date().getMonth() + 1}/${new Date().getDate()}`);
+    const total = ref(0);
+    const date = ref(
+      `${new Date().getFullYear()}/${
+        new Date().getMonth() + 1
+      }/${new Date().getDate()}`
+    );
     const showPicker = ref(false);
     const showCalendar = ref(false);
     const columns = ["餐饮", "出行", "购物", "娱乐", "住宿", "其他"];
     const router = useRouter();
+
+    onMounted(async () => {
+      const data = await fetch("/account/getTotalAmount", {
+        params: {
+          startTime: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-01`,
+          endTime: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 2
+          }-01`,
+        },
+      });
+      total.value = data.body?.total || 0;
+    });
 
     const onSubmit = async (values) => {
       const { type, date, account } = values;
@@ -86,7 +105,9 @@ export default {
     };
 
     const onDateConfirm = (value) => {
-      date.value = `${value.getMonth() + 1}/${value.getDate()}`;
+      date.value = `${new Date().getFullYear()}/${
+        value.getMonth() + 1
+      }/${value.getDate()}`;
       showCalendar.value = false;
     };
 
@@ -98,6 +119,7 @@ export default {
       type,
       account,
       date,
+      total,
       showPicker,
       showCalendar,
       columns,
