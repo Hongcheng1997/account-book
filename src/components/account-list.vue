@@ -17,9 +17,10 @@
       v-for="(item, key) in list"
       :key="key"
       center
-      :title="item.type"
-      :value="item.account"
+      :title="getTitle(item)"
+      :value="`¥${item.account}`"
       :label="formatDate(item.date)"
+      value-class="item-value"
     />
   </van-list>
 </template>
@@ -44,7 +45,14 @@ export default {
 
     const formatDate = (date) => {
       const currentTime = new Date(date);
-      return `${currentTime.getMonth() + 1}/${currentTime.getDate()}`;
+      return `${currentTime.getFullYear()}-${
+        currentTime.getMonth() + 1
+      }-${currentTime.getDate()}`;
+    };
+
+    const getTitle = (item) => {
+      const remark = item.remark;
+      return remark ? `${item.type}(${remark})` : item.type;
     };
 
     const onClickLeft = () => router.go(-1);
@@ -56,7 +64,14 @@ export default {
       finished,
       onClickLeft,
       formatDate,
+      getTitle,
     };
   },
 };
 </script>
+
+<style>
+.item-value {
+  color: #cc342c;
+}
+</style>

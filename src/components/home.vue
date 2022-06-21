@@ -10,9 +10,19 @@
   <van-form @submit="onSubmit" style="margintop: 20px">
     <van-cell-group inset>
       <van-field
+        v-model="date"
+        is-link
+        readonly
+        required
+        name="date"
+        label="日期"
+        @click="showCalendar = true"
+      />
+      <van-field
         v-model="type"
         is-link
         readonly
+        required
         name="type"
         label="类型"
         :rules="[{ required: true, message: '请填写类型' }]"
@@ -20,18 +30,21 @@
       />
       <van-field
         v-model="account"
+        required
         type="number"
         name="account"
         label="金额"
         :rules="[{ required: true, message: '请填写金额' }]"
       />
       <van-field
-        v-model="date"
-        is-link
-        readonly
-        name="date"
-        label="日期"
-        @click="showCalendar = true"
+        v-model="remark"
+        rows="2"
+        autosize
+        name="remark"
+        label="备注"
+        type="textarea"
+        maxlength="50"
+        show-word-limit
       />
     </van-cell-group>
     <van-calendar v-model:show="showCalendar" @confirm="onDateConfirm" />
@@ -61,6 +74,7 @@ export default {
     const type = ref();
     const account = ref();
     const total = ref(0);
+    const remark = ref();
     const date = ref(
       `${new Date().getFullYear()}/${
         new Date().getMonth() + 1
@@ -86,13 +100,14 @@ export default {
     });
 
     const onSubmit = async (values) => {
-      const { type, date, account } = values;
+      const { type, date, account, remark } = values;
       await fetch("/account/create", {
         method: "POST",
         params: {
           type,
           date,
           account,
+          remark,
         },
       });
       Toast("提交成功");
@@ -119,6 +134,7 @@ export default {
       account,
       date,
       total,
+      remark,
       showPicker,
       showCalendar,
       columns,
