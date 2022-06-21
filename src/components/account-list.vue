@@ -38,7 +38,7 @@ export default {
 
     const onLoad = async () => {
       const data = await fetch("/account/list");
-      list.value = data.body;
+      list.value = data?.body;
       finished.value = true;
     };
 

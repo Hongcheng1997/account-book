@@ -1,6 +1,5 @@
 <template>
   <van-nav-bar
-    title="标题"
     left-text="返回"
     right-text="账单"
     left-arrow

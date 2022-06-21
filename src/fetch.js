@@ -10,7 +10,10 @@ export default async (api, options = {}) => {
       body: JSON.stringify(options.params),
       credentials: "include",
     });
-    return data.json();
+    if (data?.status === 401) {
+      window.location.href = "/login";
+    }
+    return data?.json();
   }
   if (options.method === "GET" || !options.method) {
     const params = formatParams(options.params);
@@ -18,7 +21,10 @@ export default async (api, options = {}) => {
       method: "GET",
       credentials: "include",
     });
-    return data.json();
+    if (data?.status === 401) {
+      window.location.href = "/login";
+    }
+    return data?.json();
   }
 };
 
