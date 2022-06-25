@@ -47,7 +47,11 @@
         show-word-limit
       />
     </van-cell-group>
-    <van-calendar v-model:show="showCalendar" @confirm="onDateConfirm" />
+    <van-calendar
+      v-model:show="showCalendar"
+      :min-date="new Date(new Date().getTime() - 1000 * 60 * 60 * 24)"
+      @confirm="onDateConfirm"
+    />
     <van-popup v-model:show="showPicker" position="bottom">
       <van-picker
         :columns="columns"
