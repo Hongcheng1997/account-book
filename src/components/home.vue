@@ -75,8 +75,8 @@ import fetch from "../fetch.js";
 
 export default {
   setup() {
+    let typeId = 0;
     const type = ref();
-    const typeId = ref();
     const account = ref();
     const total = ref(0);
     const remark = ref();
@@ -122,7 +122,7 @@ export default {
 
     const onPickerConfirm = (value) => {
       type.value = value.selectedOptions[1].text;
-      typeId.value = value.selectedOptions[1].value;
+      typeId = value.selectedOptions[1].value;
       showPicker.value = false;
     };
 
