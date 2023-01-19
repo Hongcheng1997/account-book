@@ -49,14 +49,14 @@
     </van-cell-group>
     <van-calendar
       v-model:show="showCalendar"
-      :min-date="new Date(new Date().getTime() - 1000 * 60 * 60 * 24)"
+      :min-date="new Date(2010, 0, 1)"
       @confirm="onDateConfirm"
     />
     <van-popup v-model:show="showPicker" position="bottom">
-      <van-picker
-        :columns="columns"
-        @confirm="onPickerConfirm"
-        @cancel="showPicker = false"
+      <van-cascader
+        :options="columns"
+        @close="showPicker = false"
+        @finish="onPickerConfirm"
       />
     </van-popup>
     <div style="margin: 16px">
@@ -76,6 +76,7 @@ import fetch from "../fetch.js";
 export default {
   setup() {
     const type = ref();
+    const typeId = ref();
     const account = ref();
     const total = ref(0);
     const remark = ref();
@@ -86,7 +87,7 @@ export default {
     );
     const showPicker = ref(false);
     const showCalendar = ref(false);
-    const columns = ["餐饮", "出行", "购物", "娱乐", "住宿", "其他"];
+    const columns = ref([]);
     const router = useRouter();
 
     onMounted(async () => {
@@ -100,15 +101,17 @@ export default {
           }-01`,
         },
       });
+      const list = await fetch("/expenseType/list");
       total.value = data.body?.total || 0;
+      columns.value = list.body
     });
 
     const onSubmit = async (values) => {
-      const { type, date, account, remark } = values;
+      const { date, account, remark } = values;
       await fetch("/account/create", {
         method: "POST",
         params: {
-          type,
+          typeId,
           date,
           account,
           remark,
@@ -118,7 +121,8 @@ export default {
     };
 
     const onPickerConfirm = (value) => {
-      type.value = value;
+      type.value = value.selectedOptions[1].text;
+      typeId.value = value.selectedOptions[1].value;
       showPicker.value = false;
     };
 
