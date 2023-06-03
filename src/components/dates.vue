@@ -49,12 +49,15 @@ export default {
       router.push(`account-list?startTime=${date[0]}-${date[1]}-01&endTime=$${date[0]}-${date[1]}-${lastDay}`)
     };
 
+    const onClickLeft = () => router.go(-1);
+
     return {
       list,
       onLoad,
       loading,
       finished,
       toDetails,
+      onClickLeft,
     };
   },
 };
