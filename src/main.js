@@ -5,11 +5,13 @@ import App from "./App.vue";
 import Home from "./components/home.vue";
 import AccountList from "./components/account-list.vue";
 import Login from "./components/login.vue";
+import Dates from "./components/dates.vue";
 
 const routes = [
   { path: "/", component: Home },
   { path: "/account-list", component: AccountList },
   { path: "/login", component: Login },
+  { path: "/dates", component: Dates },
 ];
 
 const router = VueRouter.createRouter({

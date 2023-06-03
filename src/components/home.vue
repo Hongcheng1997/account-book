@@ -135,7 +135,7 @@ export default {
 
     const onClickLeft = () => router.push("login");
 
-    const onClickRight = () => router.push("account-list");
+    const onClickRight = () => router.push("dates");
 
     return {
       type,

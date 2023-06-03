@@ -17,10 +17,10 @@
       v-for="(item, key) in list"
       :key="key"
       center
-      :title="getTitle(item)"
-      :value="`¥${item.account}`"
-      :label="formatDate(item.date)"
+      :title="item.date"
+      :value="`¥${parseInt(item.sum)}`"
       value-class="item-value"
+      @click="toDetails(item)"
     />
   </van-list>
 </template>
@@ -38,33 +38,23 @@ export default {
     const router = useRouter();
 
     const onLoad = async () => {
-      const data = await fetch(`/account/list${window.location.search}`);
-      list.value = data?.body;
+      const data = await fetch("/account/getDateList");
+      list.value = data?.body?.list;
       finished.value = true;
     };
 
-    const formatDate = (date) => {
-      const currentTime = new Date(date);
-      return `${currentTime.getFullYear()}-${
-        currentTime.getMonth() + 1
-      }-${currentTime.getDate()}`;
+    const toDetails = (item) => {
+      const date = item.date.split('-')
+      const lastDay = new Date(date[0], +date[1], 0).getDate()
+      router.push(`account-list?startTime=${date[0]}-${date[1]}-01&endTime=$${date[0]}-${date[1]}-${lastDay}`)
     };
-
-    const getTitle = (item) => {
-      const remark = item.remark;
-      return remark ? `${item.type}(${remark})` : item.type;
-    };
-
-    const onClickLeft = () => router.go(-1);
 
     return {
       list,
       onLoad,
       loading,
       finished,
-      onClickLeft,
-      formatDate,
-      getTitle,
+      toDetails,
     };
   },
 };
@@ -73,5 +63,7 @@ export default {
 <style>
 .item-value {
   color: #cc342c;
+  height: 40px;
+  line-height: 40px;
 }
 </style>
