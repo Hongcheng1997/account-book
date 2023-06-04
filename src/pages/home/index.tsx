@@ -37,17 +37,20 @@ export default function Login() {
 
   const onFinish = (values) => {
     const { date, account, remark } = values;
-    request.post('/account/create', {
-      params: {
-        date: dayjs(date).format('YYYY-MM-DD'),
-        account,
-        remark,
-        typeId: values.type.pop(),
-      },
-    });
-    Toast.show({
-      content: '提交成功',
-    });
+    request
+      .post('/account/create', {
+        data: {
+          date: dayjs(date).format('YYYY-MM-DD'),
+          account,
+          remark,
+          typeId: values.type.pop(),
+        },
+      })
+      .then(() => {
+        Toast.show({
+          content: '提交成功',
+        });
+      });
   };
 
   useEffect(() => {
