@@ -48,8 +48,8 @@ export default function Charts() {
       type: {
         alias: '类别',
       },
-      sales: {
-        alias: '销售额',
+      sum: {
+        alias: '金额',
       },
     },
     minColumnWidth: 10,
